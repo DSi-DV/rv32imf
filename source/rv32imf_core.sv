@@ -223,7 +223,7 @@ module rv32imf_core
   csr_num_e           csr_addr_int;
   logic        [31:0] csr_rdata;
   logic        [31:0] csr_wdata;
-  PrivLvl_t           current_priv_lvl;
+  priv_lvl_t          current_priv_lvl;
 
   // Data Memory Control:  From ID stage (id-ex pipe) <--> load store unit
   logic               data_we_ex;

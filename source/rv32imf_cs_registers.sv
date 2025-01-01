@@ -1,18 +1,18 @@
 module rv32imf_cs_registers
   import rv32imf_pkg::*;
 #(
-    parameter N_HWLP           = 2,
-    parameter APU              = 0,
-    parameter A_EXTENSION      = 0,
-    parameter FPU              = 0,
-    parameter ZFINX            = 0,
-    parameter PULP_SECURE      = 0,
-    parameter USE_PMP          = 0,
-    parameter N_PMP_ENTRIES    = 16,
-    parameter NUM_MHPMCOUNTERS = 1,
-    parameter COREV_PULP       = 0,
-    parameter COREV_CLUSTER    = 0,
-    parameter DEBUG_TRIGGER_EN = 1
+    parameter int N_HWLP           = 2,
+    parameter int APU              = 0,
+    parameter int A_EXTENSION      = 0,
+    parameter int FPU              = 0,
+    parameter int ZFINX            = 0,
+    parameter int PULP_SECURE      = 0,
+    parameter int USE_PMP          = 0,
+    parameter int N_PMP_ENTRIES    = 16,
+    parameter int NUM_MHPMCOUNTERS = 1,
+    parameter int COREV_PULP       = 0,
+    parameter int COREV_CLUSTER    = 0,
+    parameter int DEBUG_TRIGGER_EN = 1
 ) (
     // Clock and Reset
     input logic clk,
@@ -69,7 +69,7 @@ module rv32imf_cs_registers
     output logic [N_PMP_ENTRIES-1:0][31:0] pmp_addr_o,
     output logic [N_PMP_ENTRIES-1:0][ 7:0] pmp_cfg_o,
 
-    output PrivLvl_t priv_lvl_o,
+    output priv_lvl_t priv_lvl_o,
 
     input logic [31:0] pc_if_i,
     input logic [31:0] pc_id_i,
@@ -156,7 +156,7 @@ module rv32imf_cs_registers
     logic [MAX_N_PMP_ENTRIES-1:0][31:0] pmpaddr;
     logic [MAX_N_PMP_CFG-1:0][31:0] pmpcfg_packed;
     logic [MAX_N_PMP_ENTRIES-1:0][7:0] pmpcfg;
-  } Pmp_t;
+  } pmp_t;
 
   // CSR update logic
   logic [31:0] csr_wdata_int;
@@ -176,16 +176,16 @@ module rv32imf_cs_registers
   logic [31:0] tmatch_value_rdata;
   logic [15:0] tinfo_types;
   // Debug
-  Dcsr_t dcsr_q, dcsr_n;
+  dcsr_t dcsr_q, dcsr_n;
   logic [31:0] depc_q, depc_n;
   logic [31:0] dscratch0_q, dscratch0_n;
   logic [31:0] dscratch1_q, dscratch1_n;
   logic [31:0] mscratch_q, mscratch_n;
 
   logic [31:0] exception_pc;
-  Status_t mstatus_q, mstatus_n;
+  status_t mstatus_q, mstatus_n;
   logic mstatus_we_int;
-  FS_t mstatus_fs_q, mstatus_fs_n;
+  fs_t mstatus_fs_q, mstatus_fs_n;
   logic [5:0] mcause_q, mcause_n;
   logic [5:0] ucause_q, ucause_n;
   logic [23:0] mtvec_n, mtvec_q;
@@ -200,8 +200,8 @@ module rv32imf_cs_registers
   logic        csr_mie_we;
 
   logic        is_irq;
-  PrivLvl_t priv_lvl_n, priv_lvl_q;
-  Pmp_t pmp_reg_q, pmp_reg_n;
+  priv_lvl_t priv_lvl_n, priv_lvl_q;
+  pmp_t pmp_reg_q, pmp_reg_n;
   //clock gating for pmp regs
   logic [MAX_N_PMP_ENTRIES-1:0]                        pmpaddr_we;
   logic [MAX_N_PMP_ENTRIES-1:0]                        pmpcfg_we;
@@ -622,7 +622,7 @@ module rv32imf_cs_registers
               mie: csr_wdata_int[MSTATUS_MIE_BIT],
               upie: csr_wdata_int[MSTATUS_UPIE_BIT],
               mpie: csr_wdata_int[MSTATUS_MPIE_BIT],
-              mpp: PrivLvl_t'(csr_wdata_int[MSTATUS_MPP_BIT_HIGH:MSTATUS_MPP_BIT_LOW]),
+              mpp: priv_lvl_t'(csr_wdata_int[MSTATUS_MPP_BIT_HIGH:MSTATUS_MPP_BIT_LOW]),
               mprv: csr_wdata_int[MSTATUS_MPRV_BIT]
           };
         end
@@ -667,7 +667,7 @@ module rv32imf_cs_registers
           dcsr_n.stoptime = 1'b0;  // stoptime
           dcsr_n.mprven = 1'b0;  // mprven
           dcsr_n.step = csr_wdata_int[2];
-          dcsr_n.prv       = (PrivLvl_t'(csr_wdata_int[1:0]) == PRIV_LVL_M) ? PRIV_LVL_M : PRIV_LVL_U; // prv (implemented as WARL)
+          dcsr_n.prv       = (priv_lvl_t'(csr_wdata_int[1:0]) == PRIV_LVL_M) ? PRIV_LVL_M : PRIV_LVL_U; // prv (implemented as WARL)
         end
 
         CSR_DPC:
@@ -927,12 +927,12 @@ module rv32imf_cs_registers
               mie: csr_wdata_int[MSTATUS_MIE_BIT],
               upie: csr_wdata_int[MSTATUS_UPIE_BIT],
               mpie: csr_wdata_int[MSTATUS_MPIE_BIT],
-              mpp: PrivLvl_t'(csr_wdata_int[MSTATUS_MPP_BIT_HIGH:MSTATUS_MPP_BIT_LOW]),
+              mpp: priv_lvl_t'(csr_wdata_int[MSTATUS_MPP_BIT_HIGH:MSTATUS_MPP_BIT_LOW]),
               mprv: csr_wdata_int[MSTATUS_MPRV_BIT]
           };
           if (FPU == 1 && ZFINX == 0) begin
             mstatus_we_int = 1'b1;
-            mstatus_fs_n   = FS_t'(csr_wdata_int[MSTATUS_FS_BIT_HIGH:MSTATUS_FS_BIT_LOW]);
+            mstatus_fs_n   = fs_t'(csr_wdata_int[MSTATUS_FS_BIT_HIGH:MSTATUS_FS_BIT_LOW]);
           end
         end
         // mie: machine interrupt enable

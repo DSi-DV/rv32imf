@@ -21,7 +21,7 @@ module rv32imf_int_controller
     output logic     [31:0] mip_o,  // MIP CSR
     input  logic            m_ie_i,  // Interrupt enable bit from CSR (M mode)
     input  logic            u_ie_i,  // Interrupt enable bit from CSR (U mode)
-    input  PrivLvl_t        current_priv_lvl_i
+    input  priv_lvl_t        current_priv_lvl_i
 );
 
   logic        global_irq_enable;

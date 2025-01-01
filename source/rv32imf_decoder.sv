@@ -3,17 +3,17 @@ module rv32imf_decoder
   import rv32imf_apu_core_pkg::*;
   import rv32imf_fpu_pkg::*;
 #(
-  parameter COREV_PULP        = 1,              // PULP ISA Extension (including PULP specific CSRs and hardware loop, excluding cv.elw)
-  parameter COREV_CLUSTER     = 0,              // PULP ISA Extension cv.elw (need COREV_PULP = 1)
-  parameter A_EXTENSION       = 0,
-  parameter FPU               = 0,
-  parameter FPU_ADDMUL_LAT    = 0,
-  parameter FPU_OTHERS_LAT    = 0,
-  parameter ZFINX             = 0,
-  parameter PULP_SECURE       = 0,
-  parameter USE_PMP           = 0,
-  parameter APU_WOP_CPU       = 6,
-  parameter DEBUG_TRIGGER_EN  = 1
+  parameter int COREV_PULP        = 1,              // PULP ISA Extension (including PULP specific CSRs and hardware loop, excluding cv.elw)
+  parameter int COREV_CLUSTER     = 0,              // PULP ISA Extension cv.elw (need COREV_PULP = 1)
+  parameter int A_EXTENSION       = 0,
+  parameter int FPU               = 0,
+  parameter int FPU_ADDMUL_LAT    = 0,
+  parameter int FPU_OTHERS_LAT    = 0,
+  parameter int ZFINX             = 0,
+  parameter int PULP_SECURE       = 0,
+  parameter int USE_PMP           = 0,
+  parameter int APU_WOP_CPU       = 6,
+  parameter int DEBUG_TRIGGER_EN  = 1
 )
 (
   // signals running to/from controller
@@ -102,7 +102,7 @@ module rv32imf_decoder
   output logic        csr_access_o,            // access to CSR
   output logic        csr_status_o,            // access to xstatus CSR
   output csr_opcode_e csr_op_o,                // operation to perform on CSR
-  input  PrivLvl_t    current_priv_lvl_i,      // The current privilege level
+  input  priv_lvl_t   current_priv_lvl_i,      // The current privilege level
 
   // LD/ST unit signals
   output logic        data_req_o,              // start transaction to data memory

@@ -90,7 +90,7 @@ module rv32imf_controller import rv32imf_pkg::*;
   input  logic        irq_sec_ctrl_i,
   input  logic [4:0]  irq_id_ctrl_i,
   input  logic        irq_wu_ctrl_i,
-  input  PrivLvl_t    current_priv_lvl_i,
+  input  priv_lvl_t   current_priv_lvl_i,
 
   output logic        irq_ack_o,
   output logic [4:0]  irq_id_o,

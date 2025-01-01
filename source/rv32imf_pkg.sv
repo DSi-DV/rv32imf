@@ -9,36 +9,36 @@ package rv32imf_pkg;
   //        |_|                                 //
   ////////////////////////////////////////////////
 
-  parameter OPCODE_SYSTEM = 7'h73;
-  parameter OPCODE_FENCE = 7'h0f;
-  parameter OPCODE_OP = 7'h33;
-  parameter OPCODE_OPIMM = 7'h13;
-  parameter OPCODE_STORE = 7'h23;
-  parameter OPCODE_LOAD = 7'h03;
-  parameter OPCODE_BRANCH = 7'h63;
-  parameter OPCODE_JALR = 7'h67;
-  parameter OPCODE_JAL = 7'h6f;
-  parameter OPCODE_AUIPC = 7'h17;
-  parameter OPCODE_LUI = 7'h37;
-  parameter OPCODE_OP_FP = 7'h53;
-  parameter OPCODE_OP_FMADD = 7'h43;
-  parameter OPCODE_OP_FNMADD = 7'h4f;
-  parameter OPCODE_OP_FMSUB = 7'h47;
-  parameter OPCODE_OP_FNMSUB = 7'h4b;
-  parameter OPCODE_STORE_FP = 7'h27;
-  parameter OPCODE_LOAD_FP = 7'h07;
-  parameter OPCODE_AMO = 7'h2F;
+  parameter int OPCODE_SYSTEM = 7'h73;
+  parameter int OPCODE_FENCE = 7'h0f;
+  parameter int OPCODE_OP = 7'h33;
+  parameter int OPCODE_OPIMM = 7'h13;
+  parameter int OPCODE_STORE = 7'h23;
+  parameter int OPCODE_LOAD = 7'h03;
+  parameter int OPCODE_BRANCH = 7'h63;
+  parameter int OPCODE_JALR = 7'h67;
+  parameter int OPCODE_JAL = 7'h6f;
+  parameter int OPCODE_AUIPC = 7'h17;
+  parameter int OPCODE_LUI = 7'h37;
+  parameter int OPCODE_OP_FP = 7'h53;
+  parameter int OPCODE_OP_FMADD = 7'h43;
+  parameter int OPCODE_OP_FNMADD = 7'h4f;
+  parameter int OPCODE_OP_FMSUB = 7'h47;
+  parameter int OPCODE_OP_FNMSUB = 7'h4b;
+  parameter int OPCODE_STORE_FP = 7'h27;
+  parameter int OPCODE_LOAD_FP = 7'h07;
+  parameter int OPCODE_AMO = 7'h2F;
 
   // Those custom opcodes are used for PULP custom instructions
-  parameter OPCODE_CUSTOM_0 = 7'h0b;
-  parameter OPCODE_CUSTOM_1 = 7'h2b;
-  parameter OPCODE_CUSTOM_2 = 7'h5b;
-  parameter OPCODE_CUSTOM_3 = 7'h7b;
+  parameter int OPCODE_CUSTOM_0 = 7'h0b;
+  parameter int OPCODE_CUSTOM_1 = 7'h2b;
+  parameter int OPCODE_CUSTOM_2 = 7'h5b;
+  parameter int OPCODE_CUSTOM_3 = 7'h7b;
 
-  parameter REGC_S1 = 2'b10;
-  parameter REGC_S4 = 2'b00;
-  parameter REGC_RD = 2'b01;
-  parameter REGC_ZERO = 2'b11;
+  parameter int REGC_S1 = 2'b10;
+  parameter int REGC_S4 = 2'b00;
+  parameter int REGC_RD = 2'b01;
+  parameter int REGC_ZERO = 2'b11;
 
   //////////////////////////////////////////////////////////////////////////////
   //      _    _    _   _    ___                       _   _                  //
@@ -49,7 +49,7 @@ package rv32imf_pkg;
   //                             |_|                                          //
   //////////////////////////////////////////////////////////////////////////////
 
-  parameter ALU_OP_WIDTH = 7;
+  parameter int ALU_OP_WIDTH = 7;
 
   typedef enum logic [ALU_OP_WIDTH-1:0] {
 
@@ -135,7 +135,7 @@ package rv32imf_pkg;
 
   } alu_opcode_e;
 
-  parameter MUL_OP_WIDTH = 3;
+  parameter int MUL_OP_WIDTH = 3;
 
   typedef enum logic [MUL_OP_WIDTH-1:0] {
 
@@ -150,9 +150,9 @@ package rv32imf_pkg;
   } mul_opcode_e;
 
   // vector modes
-  parameter VEC_MODE32 = 2'b00;
-  parameter VEC_MODE16 = 2'b10;
-  parameter VEC_MODE8 = 2'b11;
+  parameter int VEC_MODE32 = 2'b00;
+  parameter int VEC_MODE16 = 2'b10;
+  parameter int VEC_MODE8 = 2'b11;
 
 
   // FSM state encoding
@@ -179,9 +179,9 @@ package rv32imf_pkg;
   // State encoding done one-hot to ensure that debug_havereset_o, debug_running_o, debug_halted_o
   // will come directly from flip-flops. *_INDEX and debug_state_e encoding must match
 
-  parameter HAVERESET_INDEX = 0;
-  parameter RUNNING_INDEX = 1;
-  parameter HALTED_INDEX = 2;
+  parameter int HAVERESET_INDEX = 0;
+  parameter int RUNNING_INDEX = 1;
+  parameter int HALTED_INDEX = 2;
 
   typedef enum logic [2:0] {
     HAVERESET = 3'b001,
@@ -482,7 +482,7 @@ package rv32imf_pkg;
 
   // CSR operations
 
-  parameter CSR_OP_WIDTH = 2;
+  parameter int CSR_OP_WIDTH = 2;
 
   typedef enum logic [CSR_OP_WIDTH-1:0] {
     CSR_OP_READ  = 2'b00,
@@ -499,15 +499,15 @@ package rv32imf_pkg;
   parameter int unsigned CSR_MFIX_BIT_HIGH = 31;
 
   // SPR for debugger, not accessible by CPU
-  parameter SP_DVR0 = 16'h3000;
-  parameter SP_DCR0 = 16'h3008;
-  parameter SP_DMR1 = 16'h3010;
-  parameter SP_DMR2 = 16'h3011;
+  parameter int SP_DCR0 = 16'h3008;
+  parameter int SP_DVR0 = 16'h3000;
+  parameter int SP_DMR1 = 16'h3010;
+  parameter int SP_DMR2 = 16'h3011;
 
-  parameter SP_DVR_MSB = 8'h00;
-  parameter SP_DCR_MSB = 8'h01;
-  parameter SP_DMR_MSB = 8'h02;
-  parameter SP_DSR_MSB = 8'h04;
+  parameter int SP_DVR_MSB = 8'h00;
+  parameter int SP_DCR_MSB = 8'h01;
+  parameter int SP_DMR_MSB = 8'h02;
+  parameter int SP_DSR_MSB = 8'h04;
 
   // Privileged mode
   typedef enum logic [1:0] {
@@ -515,7 +515,7 @@ package rv32imf_pkg;
     PRIV_LVL_H = 2'b10,
     PRIV_LVL_S = 2'b01,
     PRIV_LVL_U = 2'b00
-  } PrivLvl_t;
+  } priv_lvl_t;
 
   typedef struct packed {
     logic uie;
@@ -528,27 +528,27 @@ package rv32imf_pkg;
     logic mpie;
     // logic spp;      - unimplemented, hardwired to '0
     // logic[1:0] hpp; - unimplemented, hardwired to '0
-    PrivLvl_t mpp;
+    priv_lvl_t mpp;
     logic mprv;
-  } Status_t;
+  } status_t;
 
   typedef struct packed {
     logic [31:28] xdebugver;
     logic [27:16] zero2;
-    logic ebreakm;
-    logic zero1;
-    logic ebreaks;
-    logic ebreaku;
-    logic stepie;
-    logic stopcount;
-    logic stoptime;
-    logic [8:6] cause;
-    logic zero0;
-    logic mprven;
-    logic nmip;
-    logic step;
-    PrivLvl_t prv;
-  } Dcsr_t;
+    logic         ebreakm;
+    logic         zero1;
+    logic         ebreaks;
+    logic         ebreaku;
+    logic         stepie;
+    logic         stopcount;
+    logic         stoptime;
+    logic [8:6]   cause;
+    logic         zero0;
+    logic         mprven;
+    logic         nmip;
+    logic         step;
+    priv_lvl_t    prv;
+  } dcsr_t;
 
   // Floating Point State
   typedef enum logic [1:0] {
@@ -556,16 +556,16 @@ package rv32imf_pkg;
     FS_INITIAL = 2'b01,
     FS_CLEAN   = 2'b10,
     FS_DIRTY   = 2'b11
-  } FS_t;
+  } fs_t;
 
   // Machine Vendor ID - OpenHW JEDEC ID is '2 decimal (bank 13)'
-  parameter MVENDORID_OFFSET = 7'h2;  // Final byte without parity bit
-  parameter MVENDORID_BANK = 25'hC;  // Number of continuation codes
+  parameter int MVENDORID_OFFSET = 7'h2;  // Final byte without parity bit
+  parameter int MVENDORID_BANK = 25'hC;  // Number of continuation codes
 
   // Machine Architecture ID (https://github.com/riscv/riscv-isa-manual/blob/master/marchid.md)
-  parameter MARCHID = 32'h4;
+  parameter int MARCHID = 32'h4;
 
-  parameter MHPMCOUNTER_WIDTH = 64;
+  parameter int MHPMCOUNTER_WIDTH = 64;
 
   ///////////////////////////////////////////////
   //   ___ ____    ____  _                     //
@@ -577,88 +577,88 @@ package rv32imf_pkg;
   ///////////////////////////////////////////////
 
   // forwarding operand mux
-  parameter SEL_REGFILE = 2'b00;
-  parameter SEL_FW_EX = 2'b01;
-  parameter SEL_FW_WB = 2'b10;
+  parameter int SEL_REGFILE = 2'b00;
+  parameter int SEL_FW_EX = 2'b01;
+  parameter int SEL_FW_WB = 2'b10;
 
   // operand a selection
-  parameter OP_A_REGA_OR_FWD = 3'b000;
-  parameter OP_A_CURRPC = 3'b001;
-  parameter OP_A_IMM = 3'b010;
-  parameter OP_A_REGB_OR_FWD = 3'b011;
-  parameter OP_A_REGC_OR_FWD = 3'b100;
+  parameter int OP_A_REGA_OR_FWD = 3'b000;
+  parameter int OP_A_CURRPC = 3'b001;
+  parameter int OP_A_IMM = 3'b010;
+  parameter int OP_A_REGB_OR_FWD = 3'b011;
+  parameter int OP_A_REGC_OR_FWD = 3'b100;
 
   // immediate a selection
-  parameter IMMA_Z = 1'b0;
-  parameter IMMA_ZERO = 1'b1;
+  parameter int IMMA_Z = 1'b0;
+  parameter int IMMA_ZERO = 1'b1;
 
   // operand b selection
-  parameter OP_B_REGB_OR_FWD = 3'b000;
-  parameter OP_B_REGC_OR_FWD = 3'b001;
-  parameter OP_B_IMM = 3'b010;
-  parameter OP_B_REGA_OR_FWD = 3'b011;
-  parameter OP_B_BMASK = 3'b100;
+  parameter int OP_B_REGB_OR_FWD = 3'b000;
+  parameter int OP_B_REGC_OR_FWD = 3'b001;
+  parameter int OP_B_IMM = 3'b010;
+  parameter int OP_B_REGA_OR_FWD = 3'b011;
+  parameter int OP_B_BMASK = 3'b100;
 
   // immediate b selection
-  parameter IMMB_I = 4'b0000;
-  parameter IMMB_S = 4'b0001;
-  parameter IMMB_U = 4'b0010;
-  parameter IMMB_PCINCR = 4'b0011;
-  parameter IMMB_S2 = 4'b0100;
-  parameter IMMB_S3 = 4'b0101;
-  parameter IMMB_VS = 4'b0110;
-  parameter IMMB_VU = 4'b0111;
-  parameter IMMB_SHUF = 4'b1000;
-  parameter IMMB_CLIP = 4'b1001;
-  parameter IMMB_BI = 4'b1011;
+  parameter int IMMB_I = 4'b0000;
+  parameter int IMMB_S = 4'b0001;
+  parameter int IMMB_U = 4'b0010;
+  parameter int IMMB_PCINCR = 4'b0011;
+  parameter int IMMB_S2 = 4'b0100;
+  parameter int IMMB_S3 = 4'b0101;
+  parameter int IMMB_VS = 4'b0110;
+  parameter int IMMB_VU = 4'b0111;
+  parameter int IMMB_SHUF = 4'b1000;
+  parameter int IMMB_CLIP = 4'b1001;
+  parameter int IMMB_BI = 4'b1011;
 
   // bit mask selection
-  parameter BMASK_A_ZERO = 1'b0;
-  parameter BMASK_A_S3 = 1'b1;
+  parameter int BMASK_A_ZERO = 1'b0;
+  parameter int BMASK_A_S3 = 1'b1;
 
-  parameter BMASK_B_S2 = 2'b00;
-  parameter BMASK_B_S3 = 2'b01;
-  parameter BMASK_B_ZERO = 2'b10;
-  parameter BMASK_B_ONE = 2'b11;
+  parameter int BMASK_B_S2 = 2'b00;
+  parameter int BMASK_B_S3 = 2'b01;
+  parameter int BMASK_B_ZERO = 2'b10;
+  parameter int BMASK_B_ONE = 2'b11;
 
-  parameter BMASK_A_REG = 1'b0;
-  parameter BMASK_A_IMM = 1'b1;
-  parameter BMASK_B_REG = 1'b0;
-  parameter BMASK_B_IMM = 1'b1;
+  parameter int BMASK_A_REG = 1'b0;
+  parameter int BMASK_A_IMM = 1'b1;
+  parameter int BMASK_B_REG = 1'b0;
+  parameter int BMASK_B_IMM = 1'b1;
 
 
   // multiplication immediates
-  parameter MIMM_ZERO = 1'b0;
-  parameter MIMM_S3 = 1'b1;
+  parameter int MIMM_ZERO = 1'b0;
+  parameter int MIMM_S3 = 1'b1;
 
   // operand c selection
-  parameter OP_C_REGC_OR_FWD = 2'b00;
-  parameter OP_C_REGB_OR_FWD = 2'b01;
-  parameter OP_C_JT = 2'b10;
+  parameter int OP_C_REGC_OR_FWD = 2'b00;
+  parameter int OP_C_REGB_OR_FWD = 2'b01;
+  parameter int OP_C_JT = 2'b10;
 
   // branch types
-  parameter BRANCH_NONE = 2'b00;
-  parameter BRANCH_JAL = 2'b01;
-  parameter BRANCH_JALR = 2'b10;
-  parameter BRANCH_COND = 2'b11;  // conditional branches
+  parameter int BRANCH_NONE = 2'b00;
+  parameter int BRANCH_JAL = 2'b01;
+  parameter int BRANCH_JALR = 2'b10;
+  parameter int BRANCH_COND = 2'b11;  // conditional branches
 
   // jump target mux
-  parameter JT_JAL = 2'b01;
-  parameter JT_JALR = 2'b10;
-  parameter JT_COND = 2'b11;
+  parameter int JT_JAL = 2'b01;
+  parameter int JT_JALR = 2'b10;
+  parameter int JT_COND = 2'b11;
 
   // Atomic operations
-  parameter AMO_LR = 5'b00010;
-  parameter AMO_SC = 5'b00011;
-  parameter AMO_SWAP = 5'b00001;
-  parameter AMO_ADD = 5'b00000;
-  parameter AMO_XOR = 5'b00100;
-  parameter AMO_AND = 5'b01100;
-  parameter AMO_OR = 5'b01000;
-  parameter AMO_MIN = 5'b10000;
-  parameter AMO_MAX = 5'b10100;
-  parameter AMO_MINU = 5'b11000;
-  parameter AMO_MAXU = 5'b11100;
+  parameter int AMO_LR = 5'b00010;
+  parameter int AMO_SC = 5'b00011;
+  parameter int AMO_SWAP = 5'b00001;
+  parameter int AMO_ADD = 5'b00000;
+  parameter int AMO_XOR = 5'b00100;
+  parameter int AMO_AND = 5'b01100;
+  parameter int AMO_OR = 5'b01000;
+  parameter int AMO_MIN = 5'b10000;
+  parameter int AMO_MAX = 5'b10100;
+  parameter int AMO_MINU = 5'b11000;
+  parameter int AMO_MAXU = 5'b11100;
 
   ///////////////////////////////////////////////
   //   ___ _____   ____  _                     //
@@ -670,58 +670,58 @@ package rv32imf_pkg;
   ///////////////////////////////////////////////
 
   // PC mux selector defines
-  parameter PC_BOOT = 4'b0000;
-  parameter PC_JUMP = 4'b0010;
-  parameter PC_BRANCH = 4'b0011;
-  parameter PC_EXCEPTION = 4'b0100;
-  parameter PC_FENCEI = 4'b0001;
-  parameter PC_MRET = 4'b0101;
-  parameter PC_URET = 4'b0110;
-  parameter PC_DRET = 4'b0111;
-  parameter PC_HWLOOP = 4'b1000;
+  parameter int PC_BOOT = 4'b0000;
+  parameter int PC_JUMP = 4'b0010;
+  parameter int PC_BRANCH = 4'b0011;
+  parameter int PC_EXCEPTION = 4'b0100;
+  parameter int PC_FENCEI = 4'b0001;
+  parameter int PC_MRET = 4'b0101;
+  parameter int PC_URET = 4'b0110;
+  parameter int PC_DRET = 4'b0111;
+  parameter int PC_HWLOOP = 4'b1000;
 
   // Exception PC mux selector defines
-  parameter EXC_PC_EXCEPTION = 3'b000;
-  parameter EXC_PC_IRQ = 3'b001;
+  parameter int EXC_PC_EXCEPTION = 3'b000;
+  parameter int EXC_PC_IRQ = 3'b001;
 
-  parameter EXC_PC_DBD = 3'b010;
-  parameter EXC_PC_DBE = 3'b011;
+  parameter int EXC_PC_DBD = 3'b010;
+  parameter int EXC_PC_DBE = 3'b011;
 
   // Exception Cause
-  parameter EXC_CAUSE_INSTR_FAULT = 5'h01;
-  parameter EXC_CAUSE_ILLEGAL_INSN = 5'h02;
-  parameter EXC_CAUSE_BREAKPOINT = 5'h03;
-  parameter EXC_CAUSE_LOAD_FAULT = 5'h05;
-  parameter EXC_CAUSE_STORE_FAULT = 5'h07;
-  parameter EXC_CAUSE_ECALL_UMODE = 5'h08;
-  parameter EXC_CAUSE_ECALL_MMODE = 5'h0B;
+  parameter int EXC_CAUSE_INSTR_FAULT = 5'h01;
+  parameter int EXC_CAUSE_ILLEGAL_INSN = 5'h02;
+  parameter int EXC_CAUSE_BREAKPOINT = 5'h03;
+  parameter int EXC_CAUSE_LOAD_FAULT = 5'h05;
+  parameter int EXC_CAUSE_STORE_FAULT = 5'h07;
+  parameter int EXC_CAUSE_ECALL_UMODE = 5'h08;
+  parameter int EXC_CAUSE_ECALL_MMODE = 5'h0B;
 
   // Interrupt mask
-  parameter IRQ_MASK = 32'hFFFF0888;
+  parameter int IRQ_MASK = 32'hFFFF0888;
 
   // Trap mux selector
-  parameter TRAP_MACHINE = 2'b00;
-  parameter TRAP_USER = 2'b01;
+  parameter int TRAP_MACHINE = 2'b00;
+  parameter int TRAP_USER = 2'b01;
 
   // Debug Cause
-  parameter DBG_CAUSE_NONE = 3'h0;
-  parameter DBG_CAUSE_EBREAK = 3'h1;
-  parameter DBG_CAUSE_TRIGGER = 3'h2;
-  parameter DBG_CAUSE_HALTREQ = 3'h3;
-  parameter DBG_CAUSE_STEP = 3'h4;
-  parameter DBG_CAUSE_RSTHALTREQ = 3'h5;
+  parameter int DBG_CAUSE_NONE = 3'h0;
+  parameter int DBG_CAUSE_EBREAK = 3'h1;
+  parameter int DBG_CAUSE_TRIGGER = 3'h2;
+  parameter int DBG_CAUSE_HALTREQ = 3'h3;
+  parameter int DBG_CAUSE_STEP = 3'h4;
+  parameter int DBG_CAUSE_RSTHALTREQ = 3'h5;
 
   // Debug module
-  parameter DBG_SETS_W = 6;
+  parameter int DBG_SETS_W = 6;
 
-  parameter DBG_SETS_IRQ = 5;
-  parameter DBG_SETS_ECALL = 4;
-  parameter DBG_SETS_EILL = 3;
-  parameter DBG_SETS_ELSU = 2;
-  parameter DBG_SETS_EBRK = 1;
-  parameter DBG_SETS_SSTE = 0;
+  parameter int DBG_SETS_IRQ = 5;
+  parameter int DBG_SETS_ECALL = 4;
+  parameter int DBG_SETS_EILL = 3;
+  parameter int DBG_SETS_ELSU = 2;
+  parameter int DBG_SETS_EBRK = 1;
+  parameter int DBG_SETS_SSTE = 0;
 
-  parameter DBG_CAUSE_HALT = 6'h1F;
+  parameter int DBG_CAUSE_HALT = 6'h1F;
 
   // Constants for the dcsr.xdebugver fields
   typedef enum logic [3:0] {
@@ -742,11 +742,11 @@ package rv32imf_pkg;
   parameter bit C_RVF = 1'b1;  // Is F extension enabled
   parameter bit C_RVD = 1'b0;  // Is D extension enabled - NOT SUPPORTED CURRENTLY
 
-  // Transprecision floating-point extensions configuration
-  parameter bit C_XF16 = 1'b0;  // Is half-precision float extension (Xf16) enabled
-  parameter bit C_XF16ALT = 1'b0; // Is alternative half-precision float extension (Xf16alt) enabled
-  parameter bit C_XF8 = 1'b0;  // Is quarter-precision float extension (Xf8) enabled
-  parameter bit C_XFVEC = 1'b0;  // Is vectorial float extension (Xfvec) enabled
+  // Enable Transprecision floating-point extensions configuration
+  parameter bit C_XF16 = 1'b0;  // Is half-precision float extension (Xf16)
+  parameter bit C_XF16ALT = 1'b0;  // Is alternative half-precision float extension (Xf16alt)
+  parameter bit C_XF8 = 1'b0;  // Is quarter-precision float extension (Xf8)
+  parameter bit C_XFVEC = 1'b0;  // Is vectorial float extension (Xfvec)
 
   // Latency of FP operations: 0 = no pipe registers, 1 = 1 pipe register etc.
   parameter int unsigned C_LAT_FP64 = 'd0;
@@ -761,14 +761,14 @@ package rv32imf_pkg;
   // General FPU-specific defines
 
   // Length of widest floating-point format = width of fp regfile
-  parameter C_FLEN = C_RVD ? 64 :  // D ext.
+  parameter int C_FLEN = C_RVD ? 64 :  // D ext.
   C_RVF ? 32 :  // F ext.
   C_XF16 ? 16 :  // Xf16 ext.
   C_XF16ALT ? 16 :  // Xf16alt ext.
   C_XF8 ? 8 :  // Xf8 ext.
   0;  // Unused in case of no FP
 
-  parameter C_FFLAG = 5;
-  parameter C_RM = 3;
+  parameter int C_FFLAG = 5;
+  parameter int C_RM = 3;
 
 endpackage
