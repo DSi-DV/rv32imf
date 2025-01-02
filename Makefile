@@ -127,13 +127,37 @@ test: build
 	@riscv64-unknown-elf-nm build/$(TEST).elf > build/prog.sym
 	@riscv64-unknown-elf-objdump -d build/$(TEST).elf > build/$(TEST).dump
 
+.PHONY: sta
+sta: generate_flist
+	@rm -rf TIMING_REPORTS_$(RTL)
+	@mkdir -p TIMING_REPORTS_$(RTL)
+	@$(call make_clk_i_100_MHz)
+	@echo "create_project top" > TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "set_property include_dirs ../include [current_fileset]" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "add_files ../TIMING_REPORTS_$(RTL)/clk_i.xdc" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@$(foreach word, $(shell cat build/flist), echo "add_files $(word)" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl;)
+	@echo "set_property top $(RTL) [current_fileset]" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "synth_design -top $(RTL) -part xc7z020clg484-1" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_methodology -file ../TIMING_REPORTS_$(RTL)/methodology_report.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_timing_summary -file ../TIMING_REPORTS_$(RTL)/timing_summary.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_timing -delay_type max -path_type full -max_paths 100 -file ../TIMING_REPORTS_$(RTL)/detailed_timing_max.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_timing -delay_type min -path_type full -max_paths 100 -file ../TIMING_REPORTS_$(RTL)/detailed_timing_min.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_clock_interaction -file ../TIMING_REPORTS_$(RTL)/clock_interaction.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "report_timing -delay_type max -slack_lesser_than 0 -max_paths 100 -file ../TIMING_REPORTS_$(RTL)/failing_paths.rpt" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@echo "exit" >> TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@cd build; vivado -mode batch -source ../TIMING_REPORTS_$(RTL)/$(RTL).tcl
+	@make -s soft_clean
+
 # Define the 'help' target to display usage information
 .PHONY: help
 help:
+	@clear;
+	@clear;
+	@make -s print_logo
 	@echo -e "\033[1;32mUsage:\033[0m"
 	@echo -e "\033[1;35m  make help                \033[0m# Display this help message"
 	@echo -e "\033[1;35m  make clean               \033[0m# Remove the build directory"
-	@echo -e "\033[1;35m  make vivado TEST=<test>  \033[0m# Clean and run the build"
+	@echo -e "\033[1;35m  make vivado TEST=<test>  \033[0m# Clean and run the tests"
 	@echo -e "\033[1;35m  make run TEST=<test>     \033[0m# Run the tests"
 	@echo -e ""
 	@echo -e "\033[1;32mExamples:\033[0m"
@@ -142,3 +166,15 @@ help:
 			echo -e "\033[1;35m  make run TEST=$${file}\033[0m"; \
 		fi; \
 	done
+
+.PHONY: print_logo
+print_logo:
+	@echo "";
+	@echo "";
+	@echo -e "\033[1;34m  ____  ____ ___                             _      \033[0m\033[1;39m Since 2001 \033[0m";
+	@echo -e "\033[1;34m |  _ \/ ___|_ _|_ __  _ __   _____   ____ _| |_ ___  _ __ ___  \033[0m";
+	@echo -e "\033[1;34m | | | \___ \| || '_ \| '_ \ / _ \ \ / / _' | __/ _ \| '__/ __| \033[0m";
+	@echo -e "\033[1;34m | |_| |___) | || | | | | | | (_) \ V / (_| | || (_) | |  \__ \ \033[0m";
+	@echo -e "\033[1;34m |____/|____/___|_| |_|_| |_|\___/ \_/ \__,_|\__\___/|_|  |___/ \033[0m";
+	@echo -e "\033[1;39m ______________ Dynamic Solution Innovators Ltd. ______________ \033[0m";
+	@echo -e "";
