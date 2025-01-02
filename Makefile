@@ -2,13 +2,13 @@
 .DEFAULT_GOAL := help
 
 # Define the root directory
-ROOT     := $(shell echo "$(realpath .)")
+ROOT := $(shell echo "$(realpath .)")
 
 # Define the grep command for warnings and errors
-GREP_EW       := grep -E "WARNING:|ERROR:|" --color=auto
+GREP_EW := grep -E "WARNING:|ERROR:|" --color=auto
 
 # Define the GCC command for RISC-V
-RV64G_GCC     := riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -nostdlib -nostartfiles
+RV64G_GCC := riscv64-unknown-elf-gcc -march=rv32imf -mabi=ilp32 -nostdlib -nostartfiles
 
 ################################################################################
 # Add all the RTL source files to the LIB variable
