@@ -197,6 +197,19 @@ module rv32imf_tb;
           end
         end
       end
+
+      // forever begin
+      //   @(posedge clk);
+      //   if ((data_addr === sym["putchar2_stdout"]
+      //       && data_we === '1 && data_req === '1 && data_gnt === '1)) begin
+      //     if (data_wdata[7:0] == "\n") begin
+      //       $display("\033[1;33mSTDOUT2         : %s\033[0m [%0t]", prints, $realtime);
+      //       prints = "";
+      //     end else begin
+      //       $sformat(prints, "%s%c", prints, data_wdata[7:0]);
+      //     end
+      //   end
+      // end
     join_none
   endtask
 
@@ -237,6 +250,7 @@ module rv32imf_tb;
     $display("\033[0;35mBOOTADDR       : 0x%08x\033[0m", sym["_start"]);
     $display("\033[0;35mTOHOSTADDR     : 0x%08x\033[0m", sym["tohost"]);
     $display("\033[0;35mPUTCHAR_STDOUT : 0x%08x\033[0m", sym["putchar_stdout"]);
+    // $display("\033[0;35mPUTCHAR2_STDOUT : 0x%08x\033[0m", sym["putchar2_stdout"]);
 
     // Monitor STDOUT prints
     monitor_prints();
