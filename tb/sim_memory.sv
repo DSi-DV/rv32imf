@@ -71,8 +71,12 @@ module sim_memory (
         instr_rvalid_o <= 1'b0;
       end
       if (instr_req_i && instr_gnt_o) begin
-        instr_rdata_queue.push_back(
-            {mem[instr_addr_i+3], mem[instr_addr_i+2], mem[instr_addr_i+1], mem[instr_addr_i]});
+        instr_rdata_queue.push_back({
+                                    mem[{instr_addr_i[31:2], 2'b0}+3],
+                                    mem[{instr_addr_i[31:2], 2'b0}+2],
+                                    mem[{instr_addr_i[31:2], 2'b0}+1],
+                                    mem[{instr_addr_i[31:2], 2'b0}]
+                                    });
       end
     end
   end
@@ -95,13 +99,17 @@ module sim_memory (
           // Write data to memory based on byte enable signals
           for (int i = 0; i < 4; i++) begin
             if (data_be_i[i]) begin
-              mem[data_addr_i+i] = data_wdata_i[8*i+:8];
+              mem[{data_addr_i[31:2], 2'b0}+i] = data_wdata_i[8*i+:8];
             end
           end
         end
         // Push read data to the queue
-        data_rdata_queue.push_back(
-            {mem[data_addr_i+3], mem[data_addr_i+2], mem[data_addr_i+1], mem[data_addr_i]});
+        data_rdata_queue.push_back({
+                                   mem[{data_addr_i[31:2], 2'b0}+3],
+                                   mem[{data_addr_i[31:2], 2'b0}+2],
+                                   mem[{data_addr_i[31:2], 2'b0}+1],
+                                   mem[{data_addr_i[31:2], 2'b0}]
+                                   });
       end
     end
   end
